@@ -23,4 +23,22 @@ task("accounts", "Prints the list of accounts", async (args, hre) => {
  */
 export default {
   solidity: "0.6.8",
+  networks: {
+    sepolia: {
+      url: `<RPC_URL>`,
+    },
+  },
+  etherscan: {
+    apiKey: "<ETHERSCAN_API_KEY>",
+    customChains: [
+      {
+        network: "sepolia",
+        chainId: 11155111,
+        urls: {
+          apiURL: "https://api-sepolia.etherscan.io/api",
+          browserURL: "https://sepolia.etherscan.io"
+        }
+      }
+    ]
+  }
 };
