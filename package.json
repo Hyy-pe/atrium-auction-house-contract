@@ -18,7 +18,7 @@
     "build:contracts": "hardhat compile",
     "build:package": "rm -rf ./dist && tsc && cp typechain/*.d.ts dist/typechain && cp -R addresses dist && cp -R artifacts/contracts dist/artifacts && cp -R contracts dist",
     "test": "hardhat test",
-    "deploy": "ts-node scripts/deploy.ts"
+    "deploy": "ts-node scripts/deploy.ts --chainId 11155111"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",

@@ -9,30 +9,20 @@ async function main() {
   if (!args.chainId) {
     throw new Error("--chainId chain ID is required");
   }
-  const path = `${process.cwd()}/.env${
-    args.chainId === 1 ? ".prod" : args.chainId === 4 ? ".dev" : ".local"
-  }`;
-  await require("dotenv").config({ path });
+  await require("dotenv").config();
   const provider = new ethers.providers.JsonRpcProvider(
     process.env.RPC_ENDPOINT
   );
   const wallet = new ethers.Wallet(`0x${process.env.PRIVATE_KEY}`, provider);
   const addressPath = `${process.cwd()}/addresses/${args.chainId}.json`;
-  const protocolAddressPath = `${process.cwd()}/node_modules/@zoralabs/core/dist/addresses/${
-    args.chainId
-  }.json`;
 
   // @ts-ignore
   const addressBook = JSON.parse(await fs.readFileSync(addressPath));
-  const protocolAddressBook = JSON.parse(
-    // @ts-ignore
-    await fs.readFileSync(protocolAddressPath)
-  );
 
   if (!addressBook.weth) {
     throw new Error("Missing WETH address in address book.");
   }
-  if (!protocolAddressBook.media) {
+  if (!addressBook.media) {
     throw new Error("Missing Media address in protocol address book.");
   }
   if (addressBook.auctionHouse) {
@@ -51,7 +41,7 @@ async function main() {
     `Deploying Auction House from deployment address ${wallet.address}...`
   );
   const impl = await AuctionHouse.deploy(
-    protocolAddressBook.media,
+    addressBook.media,
     addressBook.weth
   );
   console.log(
